@@ -58,7 +58,7 @@ body {
 
 	box-shadow: 1px 3px 2px #aaa;
 
-	x-webkit-transform:rotate(0.3deg); /*"is that a little off-level? i feel like it is off-level"*/
+	x-webkit-transform:rotate(0.3deg);
 }
 
 #board-doodles {
