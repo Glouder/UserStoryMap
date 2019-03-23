@@ -1,11 +1,17 @@
+
 var cards = {};
 var totalcolumns = 0;
 var columns = [];
 var boardInitialized = false;
 var keyTrap = null;
 
+let w = $(window).width(); //图片宽度
+let h = $(window).height(); //图片高度
+
+var need = $(".pic").get(0); //将jQuery对象转换为dom对象
+
 var baseurl = location.pathname.substring(0, location.pathname.lastIndexOf('/'));
-var socket = io.connect({path: baseurl + "/socket.io"});
+var socket = io.connect({ path: baseurl + "/socket.io" });
 
 function sendAction(a, d) {
     var message = {
@@ -15,7 +21,7 @@ function sendAction(a, d) {
     socket.json.send(message);
 }
 
-socket.on('connect', function() {
+socket.on('connect', function () {
     console.log('successful socket.io connect');
 
     //let the final part of the path be the room name
@@ -25,20 +31,20 @@ socket.on('connect', function() {
     sendAction('createCard', room);
 });
 
-socket.on('disconnect', function() {
+socket.on('disconnect', function () {
     blockUI("Server disconnected. Refresh page to try and reconnect...");
     //$('.blockOverlay').click($.unblockUI);
 });
 
 
-socket.on('message', function(data) {
+socket.on('message', function (data) {
     console.log('successful message');
     getMessage(data);
 });
 
 function unblockUI() {
     console.log('successful unlocked');
-    $.unblockUI({fadeOut: 50});
+    $.unblockUI({ fadeOut: 50 });
 }
 
 function blockUI(message) {
@@ -82,12 +88,12 @@ function getMessage(m) {
             break;
 
         case 'createCard':
-            drawNewCard(data.id, data.text, data.x, data.y,data.colour,null);
+            drawNewCard(data.id, data.text, data.x, data.y, data.colour, null);
             break;
 
         case 'deleteCard':
             $("#" + data.id).fadeOut(500,
-                function() {
+                function () {
                     $(this).remove();
                 }
             );
@@ -114,11 +120,11 @@ function getMessage(m) {
 
 }
 
-$(document).bind('keyup', function(event) {
+$(document).bind('keyup', function (event) {
     keyTrap = event.which;
 });
 
-function drawNewCard(id, text, x, y,colour, animationspeed) {
+function drawNewCard(id, text, x, y, colour, animationspeed) {
     //cards[id] = {id: id, text: text, x: x, y: y, rot: rot, colour: colour};
 
     // <div id="id" class="card colour draggable" style="-webkit-transform:rotate(rot deg);">
@@ -150,19 +156,19 @@ function drawNewCard(id, text, x, y,colour, animationspeed) {
         snapTolerance: 5,
         containment: [0, 0, 2000, 2000],
         stack: ".card",
-        start: function(event, ui) {
+        start: function (event, ui) {
             keyTrap = null;
         },
-        drag: function(event, ui) {
+        drag: function (event, ui) {
             if (keyTrap == 27) {
                 ui.helper.css(ui.originalPosition);
                 return false;
             }
         },
-		handle: "div.content"
+        handle: "div.content"
     });
 
-    card.bind("dragstop", function(event, ui) {
+    card.bind("dragstop", function (event, ui) {
         if (keyTrap == 27) {
             keyTrap = null;
             return;
@@ -178,7 +184,7 @@ function drawNewCard(id, text, x, y,colour, animationspeed) {
     });
 
     card.children(".droppable").droppable({
-        drop: function(event, ui) {
+        drop: function (event, ui) {
             var cardId = $(this).parent().attr('id');
 
             var data = {
@@ -190,9 +196,13 @@ function drawNewCard(id, text, x, y,colour, animationspeed) {
     });
 
     var speed = Math.floor(Math.random() * 1000);
-    if (typeof(animationspeed) != 'undefined') speed = animationspeed;
+    if (typeof (animationspeed) != 'undefined') speed = animationspeed;
 
-    var startPosition = $("#create-card").position();
+    //var colours = ['yellow', 'green', 'blue', 'white'];
+    var startPosition = $("#create-yellowcard").position();
+    var startPosition = $("#create-greencard").position();
+    var startPosition = $("#create-bluecard").position();
+    var startPosition = $("#create-whitecard").position();
 
     card.css('top', startPosition.top - card.height() * 0.5);
     card.css('left', startPosition.left - card.width() * 0.5);
@@ -203,27 +213,27 @@ function drawNewCard(id, text, x, y,colour, animationspeed) {
     }, speed);
 
     card.hover(
-        function() {
+        function () {
             $(this).addClass('hover');
             $(this).children('.card-icon').fadeIn(10);
         },
-        function() {
+        function () {
             $(this).removeClass('hover');
             $(this).children('.card-icon').fadeOut(150);
         }
     );
 
     card.children('.card-icon').hover(
-        function() {
+        function () {
             $(this).addClass('card-icon-hover');
         },
-        function() {
+        function () {
             $(this).removeClass('card-icon-hover');
         }
     );
 
     card.children('.delete-card-icon').click(
-        function() {
+        function () {
             $("#" + id).remove();
             sendAction('deleteCard', {
                 'id': id
@@ -231,18 +241,18 @@ function drawNewCard(id, text, x, y,colour, animationspeed) {
         }
     );
 
-    card.children('.content').editable(function(value, settings) {
+    card.children('.content').editable(function (value, settings) {
         onCardChange(id, value);
         return (value);
     }, {
-        type: 'textarea',
-        submit: 'OK',
-        style: 'inherit',
-        cssclass: 'card-edit-form',
-        placeholder: '双击开始编辑',
-        onblur: 'submit',
-        event: 'dblclick',
-    });
+            type: 'textarea',
+            submit: 'OK',
+            style: 'inherit',
+            cssclass: 'card-edit-form',
+            placeholder: '双击开始编辑',
+            onblur: 'submit',
+            event: 'dblclick',
+        });
 
 }
 
@@ -264,7 +274,7 @@ function moveCard(card, position) {
 
 
 function createCard(id, text, x, y, rot, colour) {
-    drawNewCard(id, text, x, y,colour, null);
+    drawNewCard(id, text, x, y, colour, null);
 
     var action = "createCard";
 
@@ -308,7 +318,7 @@ function initCards(cardArray) {
             0
         );
     }*/
-    drawNewCard(001,'stgawegfadf',100,100,'blue',0);
+    drawNewCard(001, 'stgawegfadf', 100, 100, 'blue', 0);
 
     boardInitialized = true;
     unblockUI();
@@ -326,20 +336,20 @@ function drawNewColumn(columnName) {
         '" width="10%" style="display:none"><h2 id="col-' + (totalcolumns + 1) +
         '" class="editable">' + columnName + '</h2></td>');
 
-    $('.editable').editable(function(value, settings) {
+    $('.editable').editable(function (value, settings) {
         onColumnChange(this.id, value);
         return (value);
     }, {
-        style: 'inherit',
-        cssclass: 'card-edit-form',
-        type: 'textarea',
-        placeholder: 'New',
-        onblur: 'submit',
-        width: '',
-        height: '',
-        xindicator: '<img src="images/ajax-loader.gif">',
-        event: 'dblclick', //event: 'mouseover'
-    });
+            style: 'inherit',
+            cssclass: 'card-edit-form',
+            type: 'textarea',
+            placeholder: 'New',
+            onblur: 'submit',
+            width: '',
+            height: '',
+            xindicator: '<img src="images/ajax-loader.gif">',
+            event: 'dblclick', //event: 'mouseover'
+        });
 
     $('.col:last').fadeIn(1500);
 
@@ -350,7 +360,7 @@ function onColumnChange(id, text) {
     var names = Array();
 
 
-    $('.col').each(function() {
+    $('.col').each(function () {
 
         var thisID = $(this).children("h2").attr('id');
 
@@ -369,7 +379,7 @@ function displayRemoveColumn() {
     if (totalcolumns <= 0) return false;
 
     $('.col:last').fadeOut(150,
-        function() {
+        function () {
             $(this).remove();
         }
     );
@@ -476,9 +486,9 @@ function resizeBoard(size) {
 
 function calcCardOffset() {
     var offsets = {};
-    $(".card").each(function() {
+    $(".card").each(function () {
         var card = $(this);
-        $(".col").each(function(i) {
+        $(".col").each(function (i) {
             var col = $(this);
             if (col.offset().left + col.outerWidth() > card.offset().left +
                 card.outerWidth() || i === $(".col").size() - 1) {
@@ -498,7 +508,7 @@ function calcCardOffset() {
 //doSync is false if you don't want to synchronize
 //with all the other users who are in this room
 function adjustCard(offsets, doSync) {
-    $(".card").each(function() {
+    $(".card").each(function () {
         var card = $(this);
         var offset = offsets[this.id];
         if (offset) {
@@ -533,23 +543,24 @@ function adjustCard(offsets, doSync) {
 //////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////
 
-$(function() {
+$(function () {
 
 
-	//disable image dragging
-	//window.ondragstart = function() { return false; };
+    //disable image dragging
+    //window.ondragstart = function() { return false; };
 
 
     //if (boardInitialized === false)
-        //blockUI('<img src="images/ajax-loader.gif" width=43 height=11/>');
+    //blockUI('<img src="images/ajax-loader.gif" width=43 height=11/>');
 
     //setTimeout($.unblockUI, 2000);
 
 
 
     //此部分计划修改为创建指定颜色的卡片
-    $("#create-card")
-        .click(function() {
+    //var colours = ['yellow', 'green', 'blue', 'white'];
+    $("#create-yellowcard")
+        .click(function () {
             var rotation = Math.random() * 10 - 5; //add a bit of random rotation (+/- 10deg)
             uniqueID = Math.round(Math.random() * 99999999); //is this big enough to assure uniqueness?
             //alert(uniqueID);
@@ -558,32 +569,97 @@ $(function() {
                 '',
                 58, $('div.board-outline').height(), // hack - not a great way to get the new card coordinates, but most consistant ATM
                 rotation,
-                randomCardColour());
+                'yellow');
+        });
+
+    $("#create-greencard")
+        .click(function () {
+            var rotation = Math.random() * 10 - 5; //add a bit of random rotation (+/- 10deg)
+            uniqueID = Math.round(Math.random() * 99999999); //is this big enough to assure uniqueness?
+            //alert(uniqueID);
+            createCard(
+                'card' + uniqueID,
+                '',
+                58, $('div.board-outline').height(), // hack - not a great way to get the new card coordinates, but most consistant ATM
+                rotation,
+                'green');
         });
 
 
+    $("#create-bluecard")
+        .click(function () {
+            var rotation = Math.random() * 10 - 5; //add a bit of random rotation (+/- 10deg)
+            uniqueID = Math.round(Math.random() * 99999999); //is this big enough to assure uniqueness?
+            //alert(uniqueID);
+            createCard(
+                'card' + uniqueID,
+                '',
+                58, $('div.board-outline').height(), // hack - not a great way to get the new card coordinates, but most consistant ATM
+                rotation,
+                'blue');
+        });
+
+
+
+
+
+    $("#create-whitecard")
+        .click(function () {
+            var rotation = Math.random() * 10 - 5; //add a bit of random rotation (+/- 10deg)
+            uniqueID = Math.round(Math.random() * 99999999); //is this big enough to assure uniqueness?
+            //alert(uniqueID);
+            createCard(
+                'card' + uniqueID,
+                '',
+                58, $('div.board-outline').height(), // hack - not a great way to get the new card coordinates, but most consistant ATM
+                rotation,
+                'white');
+        });
+
+
+    $("#saveImg").
+        click(function () {
+            // 调用html2canvas插件
+            html2canvas(need).then(function (canvas) {
+                // 调用Canvas2Image插件
+                let w = $(window).width(); //图片宽度
+                let h = $(window).height(); //图片高度
+                // 保存
+                let type = "png"; //图片类型
+                let f = "default"; //图片文件名，自定义名称
+                Canvas2Image.saveAsImage(canvas, w, h, type, f);
+            });
+        });
+
+
+
     $('#icon-col').hover(
-        function() {
+        function () {
             $('.col-icon').fadeIn(10);
         },
-        function() {
+        function () {
             $('.col-icon').fadeOut(150);
         }
     );
 
     $('#add-col').click(
-        function() {
+        function () {
             createColumn('New');
             return false;
         }
     );
 
     $('#delete-col').click(
-        function() {
+        function () {
             deleteColumn();
             return false;
         }
     );
+
+
+
+
+
 
 
     // $('#cog-button').click( function(){
@@ -605,16 +681,16 @@ $(function() {
     });
 
     //A new scope for precalculating
-    (function() {
+    (function () {
         var offsets;
 
-        $(".board-outline").bind("resizestart", function() {
+        $(".board-outline").bind("resizestart", function () {
             offsets = calcCardOffset();
         });
-        $(".board-outline").bind("resize", function(event, ui) {
+        $(".board-outline").bind("resize", function (event, ui) {
             adjustCard(offsets, false);
         });
-        $(".board-outline").bind("resizestop", function(event, ui) {
+        $(".board-outline").bind("resizestop", function (event, ui) {
             boardResizeHappened(event, ui);
             adjustCard(offsets, true);
         });

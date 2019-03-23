@@ -23,6 +23,11 @@
 	<script src="socket.io/socket.io.js"></script>
 	<!-- ** My Script ** -->
 	<script src="js/script.js"></script>
+	<script type="text/javascript" src="js/html2canvas.js"></script>
+	<script type="text/javascript" src="js/canvas2image.js"></script>
+
+		
+	
 	<title></title>
 </head>
 
@@ -31,7 +36,7 @@
 	<!--	i.fa.fa-cog.fa-lg.faded-icard-iconcon-->
 	<h1><a>UserStoryMap</a></h1>
 	<!-- <div class="board-outline"> -->
-		<div id="board">
+		<div class="pic" id="board">
 			<!-- <div id="board-doodles"></div> -->
 			<!-- <table class="board-table" id="board-table">
 				<tr>
@@ -44,8 +49,11 @@
 		</div>
 	<!-- </div> -->
 	<div class="buttons">
-		<i class="fa fa-plus-circle fa-2x bottom-icon" id="create-card"></i>
-		<i class="fa fa-expand fa-2x bottom-icon" id="smallify"></i>
+		<i class="fa fa-plus-circle fa-2x bottom-icon-blue" id="create-bluecard" ></i>
+		<i class="fa fa-plus-circle fa-2x bottom-icon-yellow" id="create-yellowcard" ></i>
+		<i class="fa fa-plus-circle fa-2x bottom-icon-green" id="create-greencard" ></i>
+		<i class="fa fa-plus-circle fa-2x bottom-icon-white" id="create-whitecard" ></i>
+		<button  class="unbutton white-button" id="saveImg" >保存为图片</button>
 	</div>
 	</body>
 

@@ -21,7 +21,6 @@ body {
 	-khtml-user-select: none;
 	-webkit-user-select: none;
 
-	background-image: url('bg/concrete_wall_2_2.png');
 
 }
 
@@ -67,7 +66,6 @@ body {
 	position: absolute;
 	display: inline;
 	opacity: 0.035;
-	background-image: url('scribbles2.png');
 }
 
 
@@ -127,7 +125,6 @@ width: 16px; height: 16px;
 	vertical-align: top;
 	height: 100%;
 	xopacity: 1;
-	background-image: url('../images/green-board-line.png');
 	background-repeat: repeat-y;
 	background-position: left top;
 }
@@ -155,19 +152,85 @@ h1, h1 a {
 	text-decoration: none;
 }
 
+.unbutton {
+	display: inline-block;
+	outline: none;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	font: 16px/100% 'Microsoft yahei',Arial, Helvetica, sans-serif;
+	padding: .5em 2em .55em;
+	text-shadow: 0 1px 1px rgba(0,0,0,.3);
+	-webkit-border-radius: .5em; 
+	-moz-border-radius: .5em;
+	border-radius: .5em;
+	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	box-shadow: 0 1px 2px rgba(0,0,0,.2);
+}
+.unbutton:hover {
+	text-decoration: none;
+}
+.unbutton:active {
+	position: relative;
+	top: 1px;
+}
+
+/* white */
+.white-button {
+	color: #606060;
+	border: solid 1px #b7b7b7;
+	background: #fff;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ededed));
+	background: -moz-linear-gradient(top,  #fff,  #ededed);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed');
+}
+.white-button:hover {
+	background: #ededed;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#dcdcdc));
+	background: -moz-linear-gradient(top,  #fff,  #dcdcdc);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#dcdcdc');
+}
+.white-button:active {
+	color: #999;
+	background: -webkit-gradient(linear, left top, left bottom, from(#ededed), to(#fff));
+	background: -moz-linear-gradient(top,  #ededed,  #fff);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#ffffff');
+}
+
+
 h2 {
 	font-family: 'Rock Salt', "Arial Rounded MT Bold", arial, serif;
 	color: #5c9db4;
 	font-size: 18px;
 	}
 
-.bottom-icon {
-	padding: 5px;
+.bottom-icon-blue {
+	padding: 10px;
+	color: rgb(0, 204, 255);
+	opacity: .4;
+}
+
+.bottom-icon-green {
+	padding: 10px;
+	color: rgb(0, 128, 79);
+	opacity: .4;
+}
+
+.bottom-icon-yellow {
+	padding: 10px;
+	color: rgb(255, 238, 0);
+	opacity: .4;
+}
+
+.bottom-icon-white {
+	padding: 10px;
+	color: white;
 	opacity: .4;
 }
 
 .bottom-icon:hover {
-	padding: 5px;
+	padding: 10px;
 	opacity: .6;
 }
 
